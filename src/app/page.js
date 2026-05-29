@@ -119,17 +119,28 @@ export default function Home() {
           )}
 
           <div style={styles.imposterRow}>
-            <span style={styles.imposterLabel}>Number of imposters</span>
-            <input
-              style={styles.imposterInput}
-              type="number"
-              min={1}
-              value={numImposters}
-              onChange={(e) => {
-                const val = parseInt(e.target.value);
-                if (!isNaN(val) && val >= 1) setNumImposters(val);
-              }}
-            />
+            <span style={styles.imposterLabel}>Imposters</span>
+            <div style={styles.counter}>
+              <button
+                style={{
+                  ...styles.counterBtn,
+                  opacity: numImposters <= 1 ? 0.3 : 1,
+                  cursor: numImposters <= 1 ? "not-allowed" : "pointer",
+                }}
+                onClick={() => setNumImposters((n) => Math.max(1, n - 1))}
+                disabled={numImposters <= 1}
+              >−</button>
+              <span style={styles.counterValue}>{numImposters}</span>
+              <button
+                style={{
+                  ...styles.counterBtn,
+                  opacity: players.length < 3 || numImposters >= players.length - 2 ? 0.3 : 1,
+                  cursor: players.length < 3 || numImposters >= players.length - 2 ? "not-allowed" : "pointer",
+                }}
+                onClick={() => setNumImposters((n) => Math.min(players.length - 2, n + 1))}
+                disabled={players.length < 3 || numImposters >= players.length - 2}
+              >+</button>
+            </div>
           </div>
 
           <button
@@ -322,17 +333,32 @@ const styles = {
     fontWeight: 600,
     color: "#e2e8f0",
   },
-  imposterInput: {
-    width: "60px",
-    padding: "0.4rem 0.5rem",
-    fontSize: "1.1rem",
+  counter: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+  },
+  counterBtn: {
+    width: "34px",
+    height: "34px",
+    borderRadius: "50%",
+    border: "1px solid rgba(255,255,255,0.25)",
+    background: "rgba(255,255,255,0.1)",
+    color: "#fff",
+    fontSize: "1.3rem",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    lineHeight: 1,
+    transition: "opacity 0.15s",
+  },
+  counterValue: {
+    fontSize: "1.3rem",
     fontWeight: 700,
     color: "#ffd700",
-    background: "rgba(255,255,255,0.1)",
-    border: "1px solid rgba(255,255,255,0.2)",
-    borderRadius: "0.4rem",
+    minWidth: "24px",
     textAlign: "center",
-    outline: "none",
   },
   primaryButton: {
     display: "block",

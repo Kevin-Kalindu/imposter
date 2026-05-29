@@ -36,6 +36,7 @@ export default function Home() {
   const [imposterIndexes, setImposterIndexes] = useState([]);
   const [revealIndex, setRevealIndex] = useState(0);
   const [showingWord, setShowingWord] = useState(false);
+  const [starterIndex, setStarterIndex] = useState(0);
 
   function addPlayer() {
     const trimmed = inputValue.trim();
@@ -63,6 +64,7 @@ export default function Home() {
     setImposterIndexes(imposters);
     setRevealIndex(0);
     setShowingWord(false);
+    setStarterIndex(Math.floor(Math.random() * players.length));
     setPhase("reveal");
   }
 
@@ -81,6 +83,7 @@ export default function Home() {
     setImposterIndexes([]);
     setRevealIndex(0);
     setShowingWord(false);
+    setStarterIndex(0);
   }
 
   const isImposter = imposterIndexes.includes(revealIndex);
@@ -195,7 +198,9 @@ export default function Home() {
       {/* ── DISCUSSION ── */}
       {phase === "discussion" && (
         <div style={styles.card}>
-          <button style={styles.primaryButton} onClick={() => setPhase("result")}>
+          <p style={styles.starterLabel}>Starting the conversation</p>
+          <h2 style={styles.starterName}>{players[starterIndex]}</h2>
+          <button style={{ ...styles.primaryButton, marginTop: "1.5rem" }} onClick={() => setPhase("result")}>
             Reveal the Imposters
           </button>
         </div>
@@ -480,5 +485,18 @@ const styles = {
     fontSize: "1.3rem",
     fontWeight: 700,
     color: "#ffd700",
+  },
+  starterLabel: {
+    textAlign: "center",
+    color: "rgba(255,255,255,0.5)",
+    fontSize: "0.9rem",
+    margin: "0 0 0.3rem",
+  },
+  starterName: {
+    textAlign: "center",
+    fontSize: "2rem",
+    fontWeight: 800,
+    color: "#ffd700",
+    margin: 0,
   },
 };
